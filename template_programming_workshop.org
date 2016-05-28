@@ -13,13 +13,16 @@
 #+BEGIN_SRC C++
 map<int, string> m;
 #+END_SRC
-insert key-value-pair
-
+#+BEGIN_NOTES
+- insert key-value-pair
+#+END_NOTES
 ** template argument deduction
 #+BEGIN_SRC C++
 m.insert(make_pair(0, "Null"));
 #+END_SRC
+#+BEGIN_NOTES
 only works for functions
+#+END_NOTES
 
 ** generator pattern
 #+BEGIN_SRC C++
