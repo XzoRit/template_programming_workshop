@@ -23,7 +23,6 @@ m.insert(make_pair(0, "Null"));
 #+BEGIN_NOTES
 only works for functions
 #+END_NOTES
-
 ** generator pattern
 #+BEGIN_SRC C++
 template<class T>
@@ -43,6 +42,7 @@ TemplateClass<T> make_t(T t)
 - make_shared
 - bind
 #+END_NOTES
+
 * safety
 ** location
 unsafe
@@ -222,6 +222,7 @@ BOOST_MPL_ASSERT_RELATION(
 - first workout the runtime algorithm
 - then implement the compiletime version
 #+END_NOTES
+
 * traits programming
 #+BEGIN_SRC C++
 TEST_CASE("advance for vector")
