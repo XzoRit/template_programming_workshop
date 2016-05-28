@@ -230,7 +230,7 @@ TEST_CASE("advance for vector")
 #+BEGIN_NOTES
 - implement for vector, list and forward_list
 #+END_NOTES
-** iterator_traits -> iterator_category
+** iterator_traits - iterator_category
 #+BEGIN_SRC C++
 template <class _Iter>
 struct iterator_traits
