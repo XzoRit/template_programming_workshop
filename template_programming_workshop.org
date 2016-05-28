@@ -2,6 +2,7 @@
 
 #+OPTIONS: reveal_title_slide:nil
 #+OPTIONS: reveal_slide_number:nil
+#+OPTIONS: reveal_progress
 #+OPTIONS: num:nil 
 #+REVEAL_HLEVEL:1
 #+REVEAL_THEME:league
