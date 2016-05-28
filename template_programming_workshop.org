@@ -133,23 +133,13 @@ struct if_c<false,T1,T2>
 #+END_NOTES
 ** boost.mpl.min_max
 #+BEGIN_SRC C++
-template<
-      typename BOOST_MPL_AUX_NA_PARAM(N1)
-    , typename BOOST_MPL_AUX_NA_PARAM(N2)
-    >
-struct min
-    : if_< less<N1,N2>,N1,N2 >
-{
-};
+template<class N1, class N2>
+struct min : if_< less<N1,N2>,N1,N2 >
+{};
 
-template<
-      typename BOOST_MPL_AUX_NA_PARAM(N1)
-    , typename BOOST_MPL_AUX_NA_PARAM(N2)
-    >
-struct max
-    : if_< less<N1,N2>,N2,N1 >
-{
-};
+template<class N1, class N2>
+struct max : if_< less<N1,N2>,N2,N1 >
+{};
 #+END_SRC
 #+BEGIN_NOTES
 - implement MaxSize in terms of boost.mpl.max
