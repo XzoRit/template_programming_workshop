@@ -67,8 +67,8 @@ private:
 };
 #+END_SRC
 #+BEGIN_NOTES
- - tags for parameter which wrap the same type
- - examples:
+- tags for parameter which wrap the same type
+- examples:
    - DFL::Chrono::BasicDateTime
    - boost.chrono.duration
 #+END_NOTES
@@ -83,7 +83,7 @@ TEST_CASE("MaxSize at compile-time")
 }
 #+END_SRC
 #+BEGIN_NOTES
- - how to check correct implementations at compile-time?
+- how to check correct implementations at compile-time?
 #+END_NOTES
 ** template specialization
 #+BEGIN_SRC C++
@@ -102,9 +102,9 @@ STATIC_ASSERT(
   SizeOfIntShallBeMax);
 #+END_SRC
 #+BEGIN_NOTES
- - compile-time-if
- - pattern-matching
- - static if in D
+- compile-time-if
+- pattern-matching
+- static if in D
 #+END_NOTES
 ** partial template specialization
 struct/class only
@@ -129,7 +129,7 @@ struct if_c<false,T1,T2>
 };
 #+END_SRC
 #+BEGIN_NOTES
- - implement MaxSize in terms of boost.mpl.if_c
+- implement MaxSize in terms of boost.mpl.if_c
 #+END_NOTES
 ** boost.mpl.min_max
 #+BEGIN_SRC C++
@@ -293,10 +293,10 @@ MySafePtr<std::string> sp(NULL);
 CHECK_THROWS_AS(void(sp->size() == 6), std::runtime_error);
 #+END_SRC
 #+BEGIN_NOTES
- - on dereferencing SafePtr
+- on dereferencing SafePtr
    - use checking policy to check if ptr is valid
    - use a fallback policy to provide defaults in case ptr is invalid
- - examples:
+- examples:
   - LockingPolicy (look at Core::NonLockingQ vs LockingQ)
   - LoggingPolicy
   - compiletime GoF StrategyPattern
@@ -464,11 +464,11 @@ CHECK(tester.counter == 2);
 - value-based-polymorphism
 
 * Resources
- - https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms
- - http://metaporky.blogspot.de/2014/07/introduction-to-c-metaprogramming-part-1.html
- - https://www.youtube.com/watch?v=9TFV2JxX7L0
- - https://www.youtube.com/watch?v=urshrBatNo4
- - https://akrzemi1.wordpress.com/2015/11/19/overload-resolution/ 
+- https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms
+- http://metaporky.blogspot.de/2014/07/introduction-to-c-metaprogramming-part-1.html
+- https://www.youtube.com/watch?v=9TFV2JxX7L0
+- https://www.youtube.com/watch?v=urshrBatNo4
+- https://akrzemi1.wordpress.com/2015/11/19/overload-resolution/ 
 
 * TODO
 * TODO boost.fusion
@@ -484,8 +484,8 @@ CHECK(tester.counter == 2);
 ** TODO ostream-operator of optional<T>
 
 * TODO Concepts
- - look at boost.concepts
- - look at concepts-lite for c++17
+- look at boost.concepts
+- look at concepts-lite for c++17
 
 * TODO Variadic Template Arguments
 
