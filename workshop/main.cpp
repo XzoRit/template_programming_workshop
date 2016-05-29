@@ -872,8 +872,9 @@ template<class T>
 class DefaultConstructed
 {
 public:
-    T* operator()(T* ptr) const
+    T* operator()(T*& ptr) const
     {
+	delete ptr;
         return new T();
     }
 };
@@ -932,10 +933,7 @@ TEST_CASE("type erased SafePtr")
         My::v2::SafePtr<std::string> sp2(
             NULL,
             My::v2::CheckForNull<std::string>(),
-            [](auto ptr)
-        {
-            return new std::string();
-        });
+            My::v2::DefaultConstructed<std::string>());
         Tester tester;
         tester(sp1);
         tester(sp2);
