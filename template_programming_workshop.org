@@ -300,21 +300,16 @@ CHECK_THROWS_AS(void(sp->size() == 6), std::runtime_error);
 Curious Reoccurring Template Pattern
 #+BEGIN_SRC C++
 template <class T> 
-struct Base {
-    void interface() {
-        // ...
-        static_cast<T*>(this)->implementation();
-        // ...
-    }
-
+class Base {
     static void staticFunc() {
-        // ...
-        T::staticSubFunc();
-        // ...
+        /*...*/ T::staticSubFunc(); /*...*/
+    }
+    void interface() {
+        /*...*/ static_cast<T*>(this)->implementation(); /*...*/
     }
 };
 
-struct Derived : Base<Derived> {
+class Derived : public Base<Derived> {
     void implementation();
     static void staticSubFunc();
 };
