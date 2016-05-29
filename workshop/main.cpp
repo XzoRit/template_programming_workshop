@@ -424,15 +424,11 @@ public:
 private:
     static T* getSafePtr(T* ptr)
     {
-        if(CheckingPolicy::isValid(ptr))
+        if(!CheckingPolicy::isValid(ptr))
         {
-            return ptr;
+            ptr = FallbackPolicy::apply(ptr);
         }
-        else
-        {
-            return FallbackPolicy::apply(ptr);
-        }
-
+	return ptr;
     }
 
     T* m_ptr;
@@ -843,12 +839,9 @@ private:
     {
         if(!m_checker->isValid(ptr))
         {
-            return m_fallback->fallback(ptr);
+            ptr = m_fallback->fallback(ptr);
         }
-        else
-        {
-            return ptr;
-        }
+	return ptr;
     }
 
     T* m_ptr;
