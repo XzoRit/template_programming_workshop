@@ -117,20 +117,13 @@ STATIC_ASSERT(
 ** partial template specialization
 struct/class only
 #+BEGIN_SRC C++
-template<
-      bool C
-    , typename T1
-    , typename T2
-    >
+template<bool C, typename T1, typename T2>
 struct if_c
 {
     typedef T1 type;
 };
 
-template<
-      typename T1
-    , typename T2
-    >
+template<typename T1, typename T2>
 struct if_c<false,T1,T2>
 {
     typedef T2 type;
