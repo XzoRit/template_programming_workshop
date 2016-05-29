@@ -216,7 +216,7 @@ BOOST_MPL_ASSERT_RELATION(
 - then implement the compiletime version
 #+END_NOTES
 
-* traits programming
+* tag dispatching
 #+BEGIN_SRC C++
 TEST_CASE("advance for vector")
 {
