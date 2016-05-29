@@ -390,10 +390,9 @@ template<class T>
 class ThrowException
 {
 public:
-    static T* apply(T* ptr)
+    static void apply(T*&)
     {
         throw std::runtime_error("invalid ptr!");
-        return ptr;
     }
 };
 
@@ -426,7 +425,7 @@ private:
     {
         if(!CheckingPolicy::isValid(ptr))
         {
-            ptr = FallbackPolicy::apply(ptr);
+            FallbackPolicy::apply(ptr);
         }
 	return ptr;
     }
@@ -798,7 +797,7 @@ private:
     {
     public:
         virtual ~Fallback() {}
-        virtual T* fallback(T* ptr) const = 0;
+        virtual void fallback(T*& ptr) const = 0;
     };
 
     template<class CheckType>
@@ -827,9 +826,9 @@ private:
         {
         }
 
-        virtual T* fallback(T* ptr) const
+        virtual void fallback(T*& ptr) const
         {
-            return m_held(ptr);
+            m_held(ptr);
         }
     private:
         FallbackType m_held;
@@ -839,7 +838,7 @@ private:
     {
         if(!m_checker->isValid(ptr))
         {
-            ptr = m_fallback->fallback(ptr);
+            m_fallback->fallback(ptr);
         }
 	return ptr;
     }
@@ -862,20 +861,18 @@ template<class T>
 class ThrowException
 {
 public:
-    T* operator()(T* ptr) const
+    void operator()(T*&) const
     {
         throw std::runtime_error("invalid ptr!");
-        return ptr;
     }
 };
 template<class T>
 class DefaultConstructed
 {
 public:
-    T* operator()(T*& ptr) const
+    void operator()(T*& ptr) const
     {
-	delete ptr;
-        return new T();
+        ptr = new T();
     }
 };
 }
