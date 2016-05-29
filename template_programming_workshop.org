@@ -454,6 +454,7 @@ CHECK(tester.counter == 2);
 * Resources
 - https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms
 - http://metaporky.blogspot.de/2014/07/introduction-to-c-metaprogramming-part-1.html
+- https://www.youtube.com/watch?v=dyHWVQE3Oo4
 - https://www.youtube.com/watch?v=9TFV2JxX7L0
 - https://www.youtube.com/watch?v=urshrBatNo4
 - https://akrzemi1.wordpress.com/2015/11/19/overload-resolution/ 
