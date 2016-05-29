@@ -438,7 +438,7 @@ SafePtr<std::string> sp1(
 SafePtr<std::string> sp2(
     NULL,
     CheckForNull<std::string>(),
-    [](auto ptr) { return new std::string(); });
+    DefaultConstructed<std::string>());
 
 Tester tester;
 tester(sp1);
