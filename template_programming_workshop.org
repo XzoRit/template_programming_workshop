@@ -47,6 +47,11 @@ TemplateClass<T> make_t(T t)
 #+END_NOTES
 
 * safety
+an error at ... is better than
+- compile time
+- link time
+- object construction
+- object use
 ** location
 unsafe
 #+BEGIN_SRC C++
