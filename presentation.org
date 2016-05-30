@@ -425,20 +425,16 @@ vector<int> != vector<int, MyAllocator>
 ** V2::SafePtr
 #+BEGIN_SRC C++
 struct Tester {
-    int counter = 0;
-    void operator()(const SafePtr<std::string>&) {
-        ++counter;
-    }
+  int counter = 0;
+  void operator()(const SafePtr<std::string>&) {
+    ++counter;
+  }
 };
 
 SafePtr<std::string> sp1(
-    NULL,
-    CheckForNull<std::string>(),
-    ThrowException<std::string>());
+  NULL, CheckForNull<std::string>(), ThrowException<std::string>());
 SafePtr<std::string> sp2(
-    NULL,
-    CheckForNull<std::string>(),
-    DefaultConstructed<std::string>());
+  NULL, CheckForNull<std::string>(), DefaultConstructed<std::string>());
 
 Tester tester;
 tester(sp1);
