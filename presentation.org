@@ -193,6 +193,7 @@ constexpr int pow(int val, int exp)
 }
 #+END_SRC
 #+BEGIN_NOTES
+- [[http://en.cppreference.com/w/cpp/language/constexpr][c++-standard constexpr]]
 - implement constexpr version of factorial
 #+END_NOTES
 ** compile-time algorithm
