@@ -221,7 +221,7 @@ BOOST_MPL_ASSERT_RELATION(
 TEST_CASE("advance for vector")
 {
     std::vector<int> v{0,1,2,3,4,5,6,7,8,9};
-    std::vector<int>::iterator it = v.begin();
+    auto it = std::cegin(v);
     advance(it, 0);
     CHECK((*it) == 0);
     advance(it, 3);
