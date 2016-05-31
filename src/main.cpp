@@ -342,8 +342,8 @@ const std::size_t sizeOfA = sizeof(a) / sizeof(a[0]);
 TEST_CASE("advance for vector")
 {
     using My::v2::advance;
-    std::vector<int> v(a, a + sizeOfA);
-    std::vector<int>::iterator it = v.begin();
+    std::vector<int> v(std::cbegin(a), std::cend(a));
+    auto it = std::cbegin(v);
     advance(it, 0);
     CHECK((*it) == 0);
     advance(it, 3);
@@ -355,8 +355,8 @@ TEST_CASE("advance for vector")
 TEST_CASE("advance for list")
 {
     using My::v2::advance;
-    std::list<int> v(a, a + sizeOfA);
-    std::list<int>::iterator it = v.begin();
+    std::list<int> v(std::cbegin(a), std::cend(a));
+    auto it = std::cbegin(v);
     advance(it, 0);
     CHECK((*it) == 0);
     advance(it, 3);
@@ -368,8 +368,8 @@ TEST_CASE("advance for list")
 TEST_CASE("advance for forward_list")
 {
     using My::v2::advance;
-    std::forward_list<int> v(a, a + sizeOfA);
-    std::forward_list<int>::iterator it = v.begin();
+    std::forward_list<int> v(std::cbegin(a), std::cend(a));
+    auto it = std::cbegin(v);
     advance(it, 0);
     CHECK((*it) == 0);
     advance(it, 3);
