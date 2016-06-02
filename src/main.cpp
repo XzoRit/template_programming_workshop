@@ -938,3 +938,91 @@ TEST_CASE("type erased SafePtr")
         CHECK(tester.counter == 2);
     }
 }
+
+namespace geometry
+{
+namespace lib_one
+{
+struct Point
+{
+    int x;
+    int y;
+};
+}
+namespace lib_two
+{
+struct Point
+{
+    int x() const { return _x; }
+    int y() const { return _y; }
+    void x(int xx) { _x = xx; }
+    void y(int yy) { _y = yy; }
+private:
+    int _x, _y;
+};
+}
+}
+
+#include <boost/fusion/adapted/struct/adapt_struct.hpp>
+
+BOOST_FUSION_ADAPT_STRUCT(
+    geometry::lib_one::Point,
+    x,
+    y)
+
+#include <boost/fusion/adapted/adt.hpp>
+
+BOOST_FUSION_ADAPT_ADT(
+    geometry::lib_two::Point,
+    (obj.x(), obj.x(val))
+    (obj.y(), obj.y(val)))
+
+#include <boost/fusion/include/size.hpp>
+#include <boost/fusion/include/zip_view.hpp>
+#include <boost/fusion/include/begin.hpp>
+#include <boost/fusion/include/next.hpp>
+#include <boost/fusion/include/deref.hpp>
+#include <boost/fusion/include/vector.hpp>
+#include <boost/fusion/include/accumulate.hpp>
+#include <numeric>
+
+namespace geometry
+{
+namespace lib
+{    
+template<class P1, class P2>
+auto distance(P1 p1, P2 p2)
+{
+    using namespace boost::fusion;
+    static_assert(
+	result_of::size<P1>::type::value
+	==
+	result_of::size<P2>::type::value,
+	"points must have same dimension");
+    typedef vector<P1&, P2&> Points;
+    typedef zip_view<Points> ZippedPoints;
+    ZippedPoints zippedPoints{Points{p1, p2}};
+    const auto acc = accumulate(
+	zippedPoints,
+	0,
+	[](const auto& acc, const auto& pointAxe)
+	{
+	    const auto diff = deref(begin(pointAxe)) - deref(next(begin(pointAxe)));
+	    return acc + diff * diff;
+	});
+    return sqrt(acc);
+}
+}
+}
+
+TEST_CASE("boost.fusion distance of two points")
+{
+    using namespace geometry;
+    lib_one::Point p1{};
+    p1.x = 2;
+    p1.y = 2;
+    lib_two::Point p2{};
+    p2.x(2);
+    p2.y(6);
+    CHECK(4.0 == lib::distance(p1, p2));
+}
