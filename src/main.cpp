@@ -427,7 +427,7 @@ private:
         {
             FallbackPolicy::apply(ptr);
         }
-	return ptr;
+        return ptr;
     }
 
     T* m_ptr;
@@ -513,8 +513,8 @@ class IAmCopyCloneable : public CopyCloneable<IAmCopyCloneable>
 {
 public:
     IAmCopyCloneable()
-	: m_value(234)
-	{}
+        : m_value(234)
+    {}
     virtual ~IAmCopyCloneable() {}
     int m_value;
 };
@@ -597,7 +597,7 @@ TEST_CASE("cloneable")
     IAmCopyCloneable one;
     Cloneable* clone = one.clone();
     IAmCopyCloneable* iAmClone =
-	boost::polymorphic_downcast<IAmCopyCloneable*>(clone);
+        boost::polymorphic_downcast<IAmCopyCloneable*>(clone);
     CHECK(one.m_value == iAmClone->m_value);
     delete clone;
 }
@@ -840,7 +840,7 @@ private:
         {
             m_fallback->fallback(ptr);
         }
-	return ptr;
+        return ptr;
     }
 
     T* m_ptr;
@@ -872,7 +872,7 @@ class DefaultConstructed
 public:
     void operator()(T* const & ptr) const
     {
-	delete ptr;
+        delete ptr;
         const_cast<T*&>(ptr) = new T();
     }
 };
