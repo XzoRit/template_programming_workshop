@@ -143,13 +143,13 @@ struct MaxSize
 {
     typedef typename accumulate
     <
-	Seq,
-	int_< 0 >,
-	max
-	<
-	    sizeof_< _1 >,
-	    sizeof_< _2 >
-	>
+    Seq,
+    int_< 0 >,
+    max
+    <
+    sizeof_< _1 >,
+    sizeof_< _2 >
+    >
     >::type type;
     static const int value = type::value;
 };
