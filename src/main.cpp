@@ -445,9 +445,9 @@ TEST_CASE("SafePtr operator-> forwarded to ptr")
     CHECK(sp->size() == 6);
 }
 
-TEST_CASE("SafePtr with NULL throws")
+TEST_CASE("SafePtr with nullptr throws")
 {
-    SafePtr<std::string> sp(NULL);
+    SafePtr<std::string> sp(nullptr);
     CHECK_THROWS_AS(void(sp->size() == 6), std::runtime_error);
 }
 
@@ -701,7 +701,7 @@ void copy_n(
     const Container& source,
     Container& target,
     std::size_t count,
-    typename boost::enable_if_c<is_array<Container>::value >::type* = NULL)
+    typename boost::enable_if_c<is_array<Container>::value >::type* = nullptr)
 {
     std::memcpy(target, source, 5);
 }
@@ -710,7 +710,7 @@ void copy_n(
     const Container& source,
     Container& target,
     std::size_t count,
-    typename boost::disable_if_c<is_array<Container>::value >::type* = NULL)
+    typename boost::disable_if_c<is_array<Container>::value >::type* = nullptr)
 {
     auto&& b(std::begin(source));
     auto&& e(std::next(b, 5));
@@ -897,24 +897,24 @@ TEST_CASE("type erased SafePtr")
             My::v2::ThrowException<std::string>());
         CHECK(sp->size() == 6);
     }
-    SECTION("SafePtr with NULL throws")
+    SECTION("SafePtr with nullptr throws")
     {
         My::v2::SafePtr<std::string> sp(
-            NULL,
+            nullptr,
             My::v2::CheckForNull<std::string>(),
             My::v2::ThrowException<std::string>());
         CHECK_THROWS_AS(void(sp->size() == 6), std::runtime_error);
     }
-    SECTION("SafePtr with NULL returns default constructed type")
+    SECTION("SafePtr with nullptr returns default constructed type")
     {
         My::v2::SafePtr<std::string> sp(
-            NULL,
+            nullptr,
             My::v2::CheckForNull<std::string>(),
             My::v2::DefaultConstructed<std::string>());
         CHECK(sp->empty());
         CHECK(sp->size() == 0);
     }
-    SECTION("SafePtr with NULL returns default constructed type")
+    SECTION("SafePtr with nullptr returns default constructed type")
     {
         struct Tester
         {
@@ -925,11 +925,11 @@ TEST_CASE("type erased SafePtr")
             }
         };
         My::v2::SafePtr<std::string> sp1(
-            NULL,
+            nullptr,
             My::v2::CheckForNull<std::string>(),
             My::v2::ThrowException<std::string>());
         My::v2::SafePtr<std::string> sp2(
-            NULL,
+            nullptr,
             My::v2::CheckForNull<std::string>(),
             My::v2::DefaultConstructed<std::string>());
         Tester tester;
