@@ -424,6 +424,14 @@ CHECK(tester.counter == 2);
 - polymorphism is a detail of the implementation
 - value-based-polymorphism
 
+* compile time - runtime
+- boost.fusion
+  - tuples
+  - views
+  - algorithms
+  - fusion - MPL - STL
+** distance between two points
+
 * Resources
 - https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms
 - http://metaporky.blogspot.de/2014/07/introduction-to-c-metaprogramming-part-1.html
