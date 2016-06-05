@@ -29,7 +29,7 @@ an error at ... is better than
 - link time
 - object construction
 - object use
-** location
+** example
 unsafe
 #+BEGIN_SRC C++
 Location(string building, string pointOfCare, int floor, int bed);
