@@ -441,11 +441,6 @@ CHECK(tester.counter == 2);
 - https://www.youtube.com/watch?v=6V73Q7ULFi0
 - https://akrzemi1.wordpress.com/2015/11/19/overload-resolution/ 
 
-* TODO
-* TODO boost.fusion
-** algorithms working on values stored in tuples
-** implement distance between two points of arbitrary dimensions
-
 * TODO Expression Templates
 ** TODO boost.xpressive
 ** TODO boost.spirit
