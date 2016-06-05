@@ -58,6 +58,41 @@ private:
    - boost.chrono.duration
 #+END_NOTES
 
+* deduction
+** int to string
+#+BEGIN_SRC C++
+map<int, string> m;
+#+END_SRC
+#+BEGIN_NOTES
+- insert key-value-pair
+#+END_NOTES
+** template argument deduction
+#+BEGIN_SRC C++
+m.insert(make_pair(0, "Null"));
+#+END_SRC
+#+BEGIN_NOTES
+only works for functions
+#+END_NOTES
+** generator pattern
+#+BEGIN_SRC C++
+template<class T>
+class TemplateClass
+{
+  TemplateClass(T t);
+};
+
+template<class T>
+TemplateClass<T> make_t(T t)
+{
+  return TemplateClass<T>(t);
+}
+#+END_SRC
+#+BEGIN_NOTES
+- make_unique
+- make_shared
+- bind
+#+END_NOTES
+
 * compute
 ** compile-time computations
 #+BEGIN_SRC C++
