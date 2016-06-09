@@ -953,10 +953,22 @@ namespace lib_two
 {
 struct Point
 {
-    int x() const { return _x; }
-    int y() const { return _y; }
-    void x(int xx) { _x = xx; }
-    void y(int yy) { _y = yy; }
+    int x() const
+    {
+        return _x;
+    }
+    int y() const
+    {
+        return _y;
+    }
+    void x(int xx)
+    {
+        _x = xx;
+    }
+    void y(int yy)
+    {
+        _y = yy;
+    }
 private:
     int _x, _y;
 };
@@ -989,27 +1001,27 @@ BOOST_FUSION_ADAPT_ADT(
 namespace geometry
 {
 namespace lib
-{    
+{
 template<class P1, class P2>
 auto distance(P1 p1, P2 p2)
 {
     using namespace boost::fusion;
     static_assert(
-	result_of::size<P1>::type::value
-	==
-	result_of::size<P2>::type::value,
-	"points must have same dimension");
+        result_of::size<P1>::type::value
+        ==
+        result_of::size<P2>::type::value,
+        "points must have same dimension");
     typedef vector<P1&, P2&> Points;
     typedef zip_view<Points> ZippedPoints;
     ZippedPoints zippedPoints{Points{p1, p2}};
     const auto acc = accumulate(
-	zippedPoints,
-	0,
-	[](const auto& acc, const auto& pointAxe)
-	{
-	    const auto diff = deref(begin(pointAxe)) - deref(next(begin(pointAxe)));
-	    return acc + diff * diff;
-	});
+                         zippedPoints,
+                         0,
+                         [](const auto& acc, const auto& pointAxe)
+    {
+        const auto diff = deref(begin(pointAxe)) - deref(next(begin(pointAxe)));
+        return acc + diff * diff;
+    });
     return sqrt(acc);
 }
 }
