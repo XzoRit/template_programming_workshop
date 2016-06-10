@@ -8,13 +8,11 @@
 #+REVEAL_HLEVEL:1
 #+REVEAL_THEME:league
 #+REVEAL_TRANS:none
-#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_PLUGINS: highlight
 
 * Template Programming Workshop
 
 * generic programming
-
-** algorithms + data structures = programs
 
 ** algorithms on unknown types
 
@@ -29,6 +27,7 @@ an error at ... is better than
 - link time
 - object construction
 - object use
+
 ** example
 unsafe
 #+BEGIN_SRC C++
@@ -38,6 +37,7 @@ safe
 #+BEGIN_SRC C++
 const Location loc(Building("A"), PointOfCare("Intensive"), Floor(101), Bed(31);)
 #+END_SRC
+
 ** named parameter
 #+BEGIN_SRC C++
 class NamedParameter
@@ -54,7 +54,6 @@ private:
 #+BEGIN_NOTES
 - tags for parameter which wrap the same type
 - examples:
-   - DFL::Chrono::BasicDateTime
    - boost.chrono.duration
 #+END_NOTES
 
