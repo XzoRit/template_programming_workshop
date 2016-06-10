@@ -58,6 +58,7 @@ private:
 #+END_NOTES
 
 * deduction
+
 ** int to string
 #+BEGIN_SRC C++
 map<int, string> m;
@@ -65,6 +66,7 @@ map<int, string> m;
 #+BEGIN_NOTES
 - insert key-value-pair
 #+END_NOTES
+
 ** template argument deduction
 #+BEGIN_SRC C++
 m.insert(make_pair(0, "Null"));
@@ -72,6 +74,7 @@ m.insert(make_pair(0, "Null"));
 #+BEGIN_NOTES
 only works for functions
 #+END_NOTES
+
 ** generator pattern
 #+BEGIN_SRC C++
 template<class T>
@@ -93,6 +96,7 @@ TemplateClass<T> make_t(T t)
 #+END_NOTES
 
 * compute
+
 ** compile-time computations
 #+BEGIN_SRC C++
 TEST_CASE("MaxSize at compile-time")
@@ -104,6 +108,7 @@ TEST_CASE("MaxSize at compile-time")
 #+BEGIN_NOTES
 - how to check correct implementations at compile-time?
 #+END_NOTES
+
 ** template specialization
 #+BEGIN_SRC C++
 template<bool x>
@@ -125,6 +130,7 @@ STATIC_ASSERT(
 - pattern-matching
 - static if in D
 #+END_NOTES
+
 ** partial template specialization
 struct/class only
 #+BEGIN_SRC C++
@@ -143,6 +149,7 @@ struct if_c<false,T1,T2>
 #+BEGIN_NOTES
 - implement MaxSize in terms of boost.mpl.if_c
 #+END_NOTES
+
 ** boost.mpl.min_max
 #+BEGIN_SRC C++
 template<class N1, class N2>
@@ -157,6 +164,7 @@ struct max : if_< less<N1,N2>,N2,N1 >
 - implement MaxSize in terms of boost.mpl.max
 - mpl.sizeof_ is needed
 #+END_NOTES
+
 ** recursive templates
 #+BEGIN_SRC C++
 template<int fac>
@@ -171,6 +179,7 @@ struct factorial<0>
     static const int value = 1;
 };
 #+END_SRC
+
 ** compile-time pow
 #+BEGIN_SRC C++
 BOOST_MPL_ASSERT_RELATION(
@@ -182,6 +191,7 @@ BOOST_MPL_ASSERT_RELATION(
 BOOST_MPL_ASSERT_RELATION(
     (pow<2, 10>::value), ==, 1024);
 #+END_SRC
+
 ** constexpr
 #+BEGIN_SRC C++
 namespace const_expr_11
@@ -206,6 +216,7 @@ constexpr int pow(int val, int exp)
 - [[http://en.cppreference.com/w/cpp/language/constexpr][c++-standard constexpr]]
 - implement constexpr version of factorial
 #+END_NOTES
+
 ** compile-time algorithm
 #+BEGIN_SRC C++
 BOOST_MPL_ASSERT_RELATION(
@@ -226,6 +237,7 @@ BOOST_MPL_ASSERT_RELATION(
 #+END_NOTES
 
 * tag dispatching
+
 ** advance
 #+BEGIN_SRC C++
 TEST_CASE("advance for vector")
@@ -243,6 +255,7 @@ TEST_CASE("advance for vector")
 #+BEGIN_NOTES
 - implement for vector, list and forward_list
 #+END_NOTES
+
 ** iterator_traits - iterator_category
 #+BEGIN_SRC C++
 template <class _Iter>
@@ -265,6 +278,7 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 - implement advance using iterator_traits
 - What about c-array? Do they work with advance? Why?
 #+END_NOTES
+
 ** why traits?
 - No member-functions?
   - Scott Meyers "Prefer non friend non member functions over member functions"
@@ -273,6 +287,7 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 - std::copy (using indirection != slow)
 
 * policy based design
+
 ** SafePtr
 #+BEGIN_SRC C++
 template<class T, class CheckingPolicy, class FallbackPolicy>
@@ -329,6 +344,7 @@ class Derived : public Base<Derived> {
 - Inject behavior
 - mixins
 #+END_NOTES
+
 ** clone
 #+BEGIN_SRC C++
 class Cloneable {
@@ -351,6 +367,7 @@ TEST_CASE("cloneable") {
 #+BEGIN_NOTES
 - explain with cloneable shapes
 #+END_NOTES
+
 ** examples
 - object counter
 - enable_shared_from_this
@@ -374,6 +391,7 @@ multiply(4,5);
 #+BEGIN_NOTES
 - useful for implementing type traits
 #+END_NOTES
+
 ** is_array
 #+BEGIN_SRC C++
 template<class T>
@@ -388,6 +406,7 @@ template<class T, std::size_t N>
 struct is_array<T[N]> : std::true_type
 {};
 #+END_SRC
+
 ** enable_if
 #+BEGIN_SRC C++
 template <bool B, class T = void>
@@ -409,6 +428,7 @@ struct enable_if : public enable_if_c<Cond::value, T>
   - type
 - type_traits + enable_if = compiletime-introspection
 #+END_NOTES
+
 ** copy_n
 - implement copy_n which:
   - takes a source and a target container and a count
@@ -420,6 +440,7 @@ struct enable_if : public enable_if_c<Cond::value, T>
   - enable_if as default parameter
   - impl with overload on true and false_type
 #+END_NOTES
+
 ** examples
 - HSM::OutPort::send()
 - [[https://github.com/datosh/ConfigReader/blob/master/ConfigReader/ConfigReader.h][config_library]]
@@ -431,7 +452,12 @@ struct enable_if : public enable_if_c<Cond::value, T>
 vector<int> == vector<int, MyAllocator>
 
 vector<int> != vector<int, MyAllocator>
+
 ** boost.any
+#+BEGIN_NOTES
+- Show implementation of boost.any
+#+END_NOTES
+
 ** V2::SafePtr
 #+BEGIN_SRC C++
 struct Tester {
@@ -451,9 +477,11 @@ tester(sp1);
 tester(sp2);
 CHECK(tester.counter == 2);
 #+END_SRC
+
 ** example:
-- [[http://en.cppreference.com/w/cpp/memory/shared_ptr/shared_ptr][shared_ptr]] vs.  [[http://en.cppreference.com/w/cpp/memory/unique_ptr][unique_ptr]]
+- [[http://en.cppreference.com/w/cpp/memory/shared_ptr/shared_ptr][shared_ptr]] vs. [[http://en.cppreference.com/w/cpp/memory/unique_ptr][unique_ptr]]
 - [[http://en.cppreference.com/w/cpp/utility/functional/function][function<>]]
+
 ** conclusion
 - polymorphism is a detail of the implementation
 - value-based-polymorphism
@@ -464,6 +492,7 @@ CHECK(tester.counter == 2);
   - views
   - algorithms
   - fusion - MPL - STL
+
 ** distance between two points
 
 * Resources
