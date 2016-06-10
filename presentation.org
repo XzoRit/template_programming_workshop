@@ -34,7 +34,7 @@ Location(string building, string pointOfCare, int floor, int bed);
 #+END_SRC
 safe
 #+BEGIN_SRC C++
-const Location loc(Building("A"), PointOfCare("Intensive"), Floor(101), Bed(31);)
+const Location loc(Building("A"), PointOfCare("Intensive"), Floor(101), Bed(31));
 #+END_SRC
 
 ** named parameter
