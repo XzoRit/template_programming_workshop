@@ -13,8 +13,7 @@
 * Template Programming Workshop
 
 * generic programming
-
-** algorithms on unknown types
+- algorithms on unknown types
 
 * problems
 - safety
@@ -89,11 +88,11 @@ TemplateClass<T> make_t(T t)
   return TemplateClass<T>(t);
 }
 #+END_SRC
-#+BEGIN_NOTES
-- make_unique
-- make_shared
-- bind
-#+END_NOTES
+
+** examples
+- [[http://en.cppreference.com/w/cpp/memory/unique_ptr/make_unique][make_unique]]
+- [[http://en.cppreference.com/w/cpp/memory/shared_ptr/make_shared][make_shared]]
+- [[http://en.cppreference.com/w/cpp/utility/functional/bind][bind]]
 
 * compute
 
