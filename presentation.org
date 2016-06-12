@@ -178,6 +178,9 @@ struct factorial<0>
     static const int value = 1;
 };
 #+END_SRC
+#+BEGIN_NOTES
+- factorial<7> is more expressive than 5040
+#+END_NOTES
 
 ** compile-time pow
 #+BEGIN_SRC C++
