@@ -296,6 +296,87 @@ TEST_CASE("compile-time pow")
     }
 }
 
+#include <boost/type_traits/remove_reference.hpp>
+#include <boost/type_traits/add_pointer.hpp>
+#include <boost/mpl/transform.hpp>
+
+namespace My
+{
+namespace v1
+{
+template<class T>
+struct add_pointer
+{
+    typedef T* type;
+};
+}
+namespace v2
+{
+template<class T>
+struct add_pointer
+{
+    typedef typename boost::remove_reference<T>::type wo_ref;
+    typedef wo_ref* type;
+};
+}
+namespace v3
+{
+using namespace boost::mpl;
+
+template<class Types>
+struct add_pointer : transform< Types, boost::add_pointer<_1> >
+{};
+}
+}
+
+#include <boost/type_traits/is_same.hpp>
+
+TEST_CASE("add_pointer, value types")
+{
+    static_assert(
+	boost::is_same<
+	int*,
+	My::v1::add_pointer<int>::type
+	>::value, "");
+    static_assert(
+	boost::is_same<
+	const int*,
+	My::v1::add_pointer<const int>::type
+	>::value, "");
+}
+
+TEST_CASE("add_pointer, reference types")
+{
+    static_assert(
+	boost::is_same<
+	int*,
+	My::v2::add_pointer<int&>::type
+	>::value, "");
+    static_assert(
+	boost::is_same<
+	const int*,
+	My::v2::add_pointer<const int&>::type
+	>::value, "");
+}
+
+#include <boost/mpl/equal.hpp>
+
+TEST_CASE("add_pointer, sequence of types")
+{
+    using namespace boost;
+    
+    static_assert(
+	boost::mpl::equal<
+	mpl::vector<char*,short*,int*,long*,float*,double*>,
+	My::v3::add_pointer<mpl::vector<char,short,int,long,float,double>>::type
+	>::value, "");
+    static_assert(
+	boost::mpl::equal<
+	mpl::vector<char*,short*,int*,long*,float*,double*>,
+	My::v3::add_pointer<mpl::vector<char&,short&,int&,long&,float&,double&>>::type
+	>::value, "");
+}
+
 namespace My
 {
 namespace v1

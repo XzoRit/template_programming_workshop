@@ -6,7 +6,7 @@
 #+OPTIONS: reveal_progress
 #+OPTIONS: num:nil 
 #+REVEAL_HLEVEL:1
-#+REVEAL_THEME:league
+#+REVEAL_THEME:black
 #+REVEAL_TRANS:none
 #+REVEAL_PLUGINS: highlight
 
@@ -105,6 +105,7 @@ TEST_CASE("MaxSize at compile-time")
 }
 #+END_SRC
 #+BEGIN_NOTES
+- implement MaxSize
 - how to check correct implementations at compile-time?
 #+END_NOTES
 
@@ -237,6 +238,44 @@ BOOST_MPL_ASSERT_RELATION(
 - first workout the runtime algorithm
 - then implement the compiletime version
 #+END_NOTES
+
+* compile-time type computation
+
+** add_pointer
+#+BEGIN_SRC C++
+static_assert(
+    is_same<
+    int*,
+    add_pointer<int>::type
+    >::value, "add_pointer of int is int*");
+#+END_SRC
+#+BEGIN_NOTES
+- implement add_pointer
+#+END_NOTES
+
+** add_pointer &
+#+BEGIN_SRC C++
+static_assert(
+    is_same<
+    int*,
+    add_pointer<int&>::type
+    >::value, "");
+#+END_SRC
+#+BEGIN_NOTES
+- add_pointer shall work with T&
+#+END_NOTES
+
+** add_pointer to sequence
+#+BEGIN_SRC C++
+static_assert(
+    mpl::equal<
+    mpl::vector<char*,short*,int*,long*,float*,double*>,
+    add_pointer<mpl::vector<char,short,int,long,float,double>>::type
+>::value, "");
+#+END_SRC
+
+** type_traits
+- #include <[[http://en.cppreference.com/w/cpp/header/type_traits][type_traits]]>
 
 * tag dispatching
 
