@@ -726,7 +726,7 @@ copy_n(
     source, Container& target,
     std::size_t count)
 {
-    std::memcpy(target, source, 5);
+    std::memcpy(target, source, count);
 }
 template<class Container>
 typename boost::enable_if_c<!is_array<Container>::value >::type
@@ -736,7 +736,7 @@ copy_n(
     std::size_t count)
 {
     auto&& b(std::begin(source));
-    auto&& e(std::next(b, 5));
+    auto&& e(std::next(b, count));
     for(; b != e; ++b)
     {
         target.push_back(*b);
@@ -752,7 +752,7 @@ void copy_n_impl(
     std::size_t count,
     std::true_type)
 {
-    std::memcpy(target, source, 5);
+    std::memcpy(target, source, count);
 }
 template<class Container>
 void copy_n_impl(
@@ -762,7 +762,7 @@ void copy_n_impl(
     std::false_type)
 {
     auto&& b(std::begin(source));
-    auto&& e(std::next(b, 5));
+    auto&& e(std::next(b, count));
     for(; b != e; ++b)
     {
         target.push_back(*b);
@@ -784,7 +784,7 @@ void copy_n(
     std::size_t count,
     typename boost::enable_if_c<is_array<Container>::value >::type* = nullptr)
 {
-    std::memcpy(target, source, 5);
+    std::memcpy(target, source, count);
 }
 template<class Container>
 void copy_n(
@@ -794,7 +794,7 @@ void copy_n(
     typename boost::disable_if_c<is_array<Container>::value >::type* = nullptr)
 {
     auto&& b(std::begin(source));
-    auto&& e(std::next(b, 5));
+    auto&& e(std::next(b, count));
     for(; b != e; ++b)
     {
         target.push_back(*b);
