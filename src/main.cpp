@@ -1077,6 +1077,7 @@ BOOST_FUSION_ADAPT_ADT(
 #include <boost/fusion/include/deref.hpp>
 #include <boost/fusion/include/vector.hpp>
 #include <boost/fusion/include/accumulate.hpp>
+#include <boost/fusion/include/tuple.hpp>
 #include <numeric>
 
 namespace geometry
@@ -1088,9 +1089,9 @@ auto distance(P1 p1, P2 p2)
 {
     using namespace boost::fusion;
     static_assert(
-        result_of::size<P1>::type::value
+        tuple_size<P1>::value
         ==
-        result_of::size<P2>::type::value,
+        tuple_size<P2>::value,
         "points must have same dimension");
     typedef vector<P1&, P2&> Points;
     typedef zip_view<Points> ZippedPoints;
