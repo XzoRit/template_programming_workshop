@@ -11,6 +11,15 @@
 
 * Template Programming Workshop
 
+* 4 different types of computation
+- runtime
+- type-level computations
+- heterogeneous computations
+- constexpr
+#+BEGIN_NOTES
+- examples: [[file:~/projects/programming/c++/boost/libs/hana/doc/html/index.html#tutorial-introduction-quadrants][boost.hana computational quadrants]]
+#+END_NOTES
+
 * generic programming
 - algorithms on unknown types
 
