@@ -10,6 +10,8 @@
 #include <iterator>
 #include <exception>
 #include <algorithm>
+#include <numeric>
+#include <functional>
 
 template<class T, class Tag>
 class NamedParameter
@@ -107,16 +109,19 @@ TEST_CASE("MaxSize at compile-time")
 #include <boost/mpl/placeholders.hpp>
 #include <boost/mpl/assert.hpp>
 #include <boost/mpl/accumulate.hpp>
+#include <boost/mpl/transform.hpp>
 #include <boost/mpl/vector.hpp>
+#include <boost/mpl/vector_c.hpp>
 #include <boost/mpl/int.hpp>
+#include <boost/mpl/size_t.hpp>
 
 namespace MplMax
+{
+namespace v1
 {
 using namespace boost::mpl;
 using namespace boost::mpl::placeholders;
 
-namespace v1
-{
 template<class T1, class T2>
 struct MaxSize
 {
@@ -129,6 +134,9 @@ struct MaxSize
 }
 namespace v2
 {
+using namespace boost::mpl;
+using namespace boost::mpl::placeholders;
+
 template<class T1, class T2>
 struct MaxSize
 {
@@ -138,25 +146,76 @@ struct MaxSize
 }
 namespace v3
 {
-template<class Seq>
-struct MaxSize
+using boost::mpl::transform;
+using boost::mpl::sizeof_;
+using boost::mpl::accumulate;
+using boost::mpl::size_t;
+using boost::mpl::placeholders::_1;
+using boost::mpl::placeholders::_2;
+
+namespace MaxSize
 {
-    typedef typename accumulate
+namespace runtime
+{
+namespace v1
+{
+static auto value(const std::vector<std::string>& strings)
+{
+    std::vector<std::string::size_type> sizes(strings.size());
+    std::transform(
+        std::begin(strings), std::end(strings),
+        std::begin(sizes),
+        [](const auto& a)
+    {
+        return a.size();
+    });
+
+    return std::accumulate(
+               std::begin(sizes), std::end(sizes),
+               std::string::size_type{0},
+               [](auto a, auto b)
+    {
+        return std::max(a, b);
+    });
+}
+}
+namespace v2
+{
+static auto value(const std::vector<std::string>& strings)
+{
+    return std::accumulate(
+               std::begin(strings), std::end(strings),
+               std::string::size_type{0},
+               [](auto a, auto b)
+    {
+        return std::max(a, b.size());
+    });
+}
+}
+}
+template<class Seq>
+struct compiletime
+{
+    typedef typename transform
     <
     Seq,
-    int_< 0 >,
-    max
+    sizeof_< _1 >
+    >::type sizes;
+
+    typedef typename accumulate
     <
-    sizeof_< _1 >,
-    sizeof_< _2 >
-    >
+    sizes,
+    size_t< 0 >,
+    boost::mpl::max< _1, _2 >
     >::type type;
     static const int value = type::value;
 };
 }
 }
+}
 
 #include <boost/type_traits/is_same.hpp>
+#include <boost/type_traits/is_float.hpp>
 
 TEST_CASE("MaxSize with boost.mpl at compile-time")
 {
@@ -183,11 +242,44 @@ TEST_CASE("MaxSize with boost.mpl at compile-time")
             (MaxSize<char, int>::value), ==, sizeof(int));
     }
     {
+        using namespace std::string_literals;
         using namespace MplMax::v3;
+        using MaxSize::runtime::v1::value;
+
+        CHECK((value({"char"     , "short", "int"  , "long long"})) == "long long"s.size());
+        CHECK((value({"long long", "int"  , "short", "char"     })) == "long long"s.size());
+        CHECK((value({"float"    , "double"                     })) == "double"s.size());
+        CHECK((value({"double"   , "float"     		        })) == "double"s.size());
+    }
+    {
+        using namespace std::string_literals;
+        using namespace MplMax::v3;
+        using MaxSize::runtime::v2::value;
+
+        CHECK((value({"char"     , "short", "int"  , "long long"})) == "long long"s.size());
+        CHECK((value({"long long", "int"  , "short", "char"     })) == "long long"s.size());
+        CHECK((value({"float"    , "double"                     })) == "double"s.size());
+        CHECK((value({"double"   , "float"     		        })) == "double"s.size());
+    }
+    {
+        using namespace MplMax::v3;
+
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize< vector< char, int, long long > >::value), ==, sizeof(long long));
+            (MaxSize::compiletime< vector< char, short, int, long long > >::value),
+            ==,
+            sizeof(long long));
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize< vector< char, int, double, long > >::value), ==, sizeof(double));
+            (MaxSize::compiletime< vector< long long, int, short, char > >::value),
+            ==,
+            sizeof(long long));
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime< vector< float, double > >::value),
+            ==,
+            sizeof(double));
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime< vector< double, float > >::value),
+            ==,
+            sizeof(double));
     }
 }
 
@@ -334,29 +426,29 @@ struct add_pointer : transform< Types, boost::add_pointer<_1> >
 TEST_CASE("add_pointer, value types")
 {
     static_assert(
-	boost::is_same<
-	int*,
-	My::v1::add_pointer<int>::type
-	>::value, "");
+        boost::is_same<
+        int*,
+        My::v1::add_pointer<int>::type
+        >::value, "");
     static_assert(
-	boost::is_same<
-	const int*,
-	My::v1::add_pointer<const int>::type
-	>::value, "");
+        boost::is_same<
+        const int*,
+        My::v1::add_pointer<const int>::type
+        >::value, "");
 }
 
 TEST_CASE("add_pointer, reference types")
 {
     static_assert(
-	boost::is_same<
-	int*,
-	My::v2::add_pointer<int&>::type
-	>::value, "");
+        boost::is_same<
+        int*,
+        My::v2::add_pointer<int&>::type
+        >::value, "");
     static_assert(
-	boost::is_same<
-	const int*,
-	My::v2::add_pointer<const int&>::type
-	>::value, "");
+        boost::is_same<
+        const int*,
+        My::v2::add_pointer<const int&>::type
+        >::value, "");
 }
 
 #include <boost/mpl/equal.hpp>
@@ -364,17 +456,17 @@ TEST_CASE("add_pointer, reference types")
 TEST_CASE("add_pointer, sequence of types")
 {
     using namespace boost;
-    
+
     static_assert(
-	boost::mpl::equal<
-	mpl::vector<char*,short*,int*,long*,float*,double*>,
-	My::v3::add_pointer<mpl::vector<char,short,int,long,float,double>>::type
-	>::value, "");
+        boost::mpl::equal<
+        mpl::vector<char*,short*,int*,long*,float*,double*>,
+        My::v3::add_pointer<mpl::vector<char,short,int,long,float,double>>::type
+        >::value, "");
     static_assert(
-	boost::mpl::equal<
-	mpl::vector<char*,short*,int*,long*,float*,double*>,
-	My::v3::add_pointer<mpl::vector<char&,short&,int&,long&,float&,double&>>::type
-	>::value, "");
+        boost::mpl::equal<
+        mpl::vector<char*,short*,int*,long*,float*,double*>,
+        My::v3::add_pointer<mpl::vector<char&,short&,int&,long&,float&,double&>>::type
+        >::value, "");
 }
 
 namespace My
