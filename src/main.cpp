@@ -692,6 +692,16 @@ public:
     int m_value;
 };
 
+class YouAreCopyCloneable : public CopyCloneable<YouAreCopyCloneable>
+{
+public:
+    YouAreCopyCloneable()
+        : m_value(234)
+    {}
+    virtual ~YouAreCopyCloneable() {}
+    int m_value;
+};
+
 template<class CountMe>
 class ObjectCounter
 {
@@ -767,12 +777,21 @@ TEST_CASE("crtp-object-counter")
 TEST_CASE("cloneable")
 {
     using namespace crtp;
-    IAmCopyCloneable one;
-    Cloneable* clone = one.clone();
-    IAmCopyCloneable* iAmClone =
-        boost::polymorphic_downcast<IAmCopyCloneable*>(clone);
-    CHECK(one.m_value == iAmClone->m_value);
-    delete clone;
+    {
+        IAmCopyCloneable one;
+        Cloneable* clone = one.clone();
+        IAmCopyCloneable* iAmClone =
+            boost::polymorphic_downcast<IAmCopyCloneable*>(clone);
+        CHECK(one.m_value == iAmClone->m_value);
+        delete clone;
+    }
+    {
+        YouAreCopyCloneable one;
+        Cloneable* clone = one.clone();
+        YouAreCopyCloneable* iAmClone =
+            boost::polymorphic_downcast<YouAreCopyCloneable*>(clone);
+        delete clone;
+    }
 }
 
 namespace My
