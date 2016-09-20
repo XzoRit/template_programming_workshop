@@ -837,7 +837,8 @@ copy_n(
     source, Container& target,
     std::size_t count)
 {
-    std::memcpy(target, source, count);
+    using value_type = decltype(*std::begin(source));
+    std::memcpy(target, source, sizeof(value_type) * count);
 }
 template<class Container>
 typename boost::disable_if<is_array<Container> >::type
@@ -863,7 +864,8 @@ void copy_n(
     std::size_t count,
     typename boost::enable_if<is_array<Container> >::type* = nullptr)
 {
-    std::memcpy(target, source, count);
+    using value_type = decltype(*std::begin(source));
+    std::memcpy(target, source, sizeof(value_type) * count);
 }
 template<class Container>
 void copy_n(
@@ -889,7 +891,8 @@ void copy_n_impl(
     std::size_t count,
     std::true_type)
 {
-    std::memcpy(target, source, count);
+    using value_type = decltype(*std::begin(source));
+    std::memcpy(target, source, sizeof(value_type) * count);
 }
 template<class Container>
 void copy_n_impl(
@@ -927,8 +930,22 @@ TEST_CASE("copy_n for containers")
     {
         int a[] = {1,2,3,4,5};
         int b[5];
-        My::v1::copy_n(a, b, sizof(int) * 5);
-        CHECK(*a == *b);
+        My::v1::copy_n(a, b, 5);
+        CHECK(std::equal(std::begin(a), std::end(a), std::begin(b)));
+    }
+    SECTION("container")
+    {
+        std::list<int> a = {1,2,3,4,5};
+        std::list<int> b;
+        My::v2::copy_n(a, b, 5);
+        CHECK(a == b);
+    }
+    SECTION("array")
+    {
+        int a[] = {1,2,3,4,5};
+        int b[5];
+        My::v2::copy_n(a, b, 5);
+        CHECK(std::equal(std::begin(a), std::end(a), std::begin(b)));
     }
     SECTION("container")
     {
@@ -941,8 +958,8 @@ TEST_CASE("copy_n for containers")
     {
         int a[] = {1,2,3,4,5};
         int b[5];
-        My::v3::copy_n(a, b, sizeof(int) * 5);
-        CHECK(*a == *b);
+        My::v3::copy_n(a, b, 5);
+        CHECK(std::equal(std::begin(a), std::end(a), std::begin(b)));
     }
 }
 
