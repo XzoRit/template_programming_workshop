@@ -908,7 +908,7 @@ TEST_CASE("copy_n for containers")
     {
         int a[] = {1,2,3,4,5};
         int b[5];
-        My::v1::copy_n(a, b, 5);
+        My::v1::copy_n(a, b, sizof(int) * 5);
         CHECK(*a == *b);
     }
     SECTION("container")
@@ -922,7 +922,7 @@ TEST_CASE("copy_n for containers")
     {
         int a[] = {1,2,3,4,5};
         int b[5];
-        My::v3::copy_n(a, b, 5);
+        My::v3::copy_n(a, b, sizeof(int) * 5);
         CHECK(*a == *b);
     }
 }
