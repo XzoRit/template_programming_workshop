@@ -812,7 +812,7 @@ namespace My
 namespace v1
 {
 template<class Container>
-typename boost::enable_if_c<is_array<Container>::value >::type
+typename boost::enable_if<is_array<Container> >::type
 copy_n(
     const Container&
     source, Container& target,
@@ -821,7 +821,7 @@ copy_n(
     std::memcpy(target, source, count);
 }
 template<class Container>
-typename boost::enable_if_c<!is_array<Container>::value >::type
+typename boost::disable_if<is_array<Container> >::type
 copy_n(
     const Container& source,
     Container& target,
@@ -836,6 +836,32 @@ copy_n(
 }
 }
 namespace v2
+{
+template<class Container>
+void copy_n(
+    const Container& source,
+    Container& target,
+    std::size_t count,
+    typename boost::enable_if<is_array<Container> >::type* = nullptr)
+{
+    std::memcpy(target, source, count);
+}
+template<class Container>
+void copy_n(
+    const Container& source,
+    Container& target,
+    std::size_t count,
+    typename boost::disable_if<is_array<Container> >::type* = nullptr)
+{
+    auto&& b(std::begin(source));
+    auto&& e(std::next(b, count));
+    for(; b != e; ++b)
+    {
+        target.push_back(*b);
+    }
+}
+}
+namespace v3
 {
 template<class Container>
 void copy_n_impl(
@@ -865,32 +891,6 @@ void copy_n(const Container& source, Container& target, std::size_t count)
 {
     typedef typename is_array<Container>::type maybe_array;
     copy_n_impl(source, target, count, maybe_array());
-}
-}
-namespace v3
-{
-template<class Container>
-void copy_n(
-    const Container& source,
-    Container& target,
-    std::size_t count,
-    typename boost::enable_if_c<is_array<Container>::value >::type* = nullptr)
-{
-    std::memcpy(target, source, count);
-}
-template<class Container>
-void copy_n(
-    const Container& source,
-    Container& target,
-    std::size_t count,
-    typename boost::disable_if_c<is_array<Container>::value >::type* = nullptr)
-{
-    auto&& b(std::begin(source));
-    auto&& e(std::next(b, count));
-    for(; b != e; ++b)
-    {
-        target.push_back(*b);
-    }
 }
 }
 }
