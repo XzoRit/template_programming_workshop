@@ -114,6 +114,8 @@ TEST_CASE("MaxSize at compile-time")
 #include <boost/mpl/vector_c.hpp>
 #include <boost/mpl/int.hpp>
 #include <boost/mpl/size_t.hpp>
+#include <boost/mpl/protect.hpp>
+#include <boost/mpl/lambda.hpp>
 
 namespace MplMax
 {
@@ -150,6 +152,8 @@ using boost::mpl::transform;
 using boost::mpl::sizeof_;
 using boost::mpl::accumulate;
 using boost::mpl::size_t;
+using boost::mpl::protect;
+using boost::mpl::lambda;
 using boost::mpl::placeholders::_1;
 using boost::mpl::placeholders::_2;
 
@@ -193,29 +197,48 @@ static auto value(const std::vector<std::string>& strings)
 }
 }
 }
-template<class Seq>
 struct compiletime
 {
-    typedef typename transform
-    <
-    Seq,
-    sizeof_< _1 >
-    >::type sizes;
+    template<class Seq>
+    struct v1
+    {
+        typedef typename transform
+        <
+        Seq,
+        sizeof_< _1 >
+        >::type sizes;
 
-    typedef typename accumulate
-    <
-    sizes,
-    size_t< 0 >,
-    boost::mpl::max< _1, _2 >
-    >::type type;
-    static const int value = type::value;
+        typedef typename accumulate
+        <
+        sizes,
+        size_t< 0 >,
+        boost::mpl::max< _1, _2 >
+        >::type type;
+        static const int value = type::value;
+    };
+
+    template<class Seq>
+    struct v2
+    {
+        typedef typename lambda
+        <
+        sizeof_< _1 >
+        >::type sizeof_type;
+
+        typedef typename accumulate
+        <
+        Seq,
+        size_t< 0 >,
+        boost::mpl::max< _1, protect< sizeof_type >::type::apply< _2 > >
+        >::type type;
+        static const int value = type::value;
+    };
 };
 }
 }
 }
 
 #include <boost/type_traits/is_same.hpp>
-#include <boost/type_traits/is_float.hpp>
 
 TEST_CASE("MaxSize with boost.mpl at compile-time")
 {
@@ -265,19 +288,39 @@ TEST_CASE("MaxSize with boost.mpl at compile-time")
         using namespace MplMax::v3;
 
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize::compiletime< vector< char, short, int, long long > >::value),
+            (MaxSize::compiletime::v1< vector< char, short, int, long long > >::value),
             ==,
             sizeof(long long));
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize::compiletime< vector< long long, int, short, char > >::value),
+            (MaxSize::compiletime::v1< vector< long long, int, short, char > >::value),
             ==,
             sizeof(long long));
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize::compiletime< vector< float, double > >::value),
+            (MaxSize::compiletime::v1< vector< float, double > >::value),
             ==,
             sizeof(double));
         BOOST_MPL_ASSERT_RELATION(
-            (MaxSize::compiletime< vector< double, float > >::value),
+            (MaxSize::compiletime::v1< vector< double, float > >::value),
+            ==,
+            sizeof(double));
+    }
+    {
+        using namespace MplMax::v3;
+
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime::v2< vector< char, short, int, long long > >::value),
+            ==,
+            sizeof(long long));
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime::v2< vector< long long, int, short, char > >::value),
+            ==,
+            sizeof(long long));
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime::v2< vector< float, double > >::value),
+            ==,
+            sizeof(double));
+        BOOST_MPL_ASSERT_RELATION(
+            (MaxSize::compiletime::v2< vector< double, float > >::value),
             ==,
             sizeof(double));
     }
