@@ -6,8 +6,9 @@
 #+OPTIONS: reveal_progress
 #+OPTIONS: num:nil 
 #+REVEAL_HLEVEL:1
-#+REVEAL_THEME:black
-#+REVEAL_TRANS:none
+#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_THEME: black
+#+REVEAL_TRANS: none
 
 * Template Programming Workshop
 
