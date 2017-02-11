@@ -1059,7 +1059,7 @@ private:
   {
   public:
     virtual ~Fallback() {}
-    virtual void fallback(T*& ptr) const = 0;
+    virtual void fallback(T*& ptr) = 0;
   };
 
   template<class CheckType>
@@ -1088,7 +1088,7 @@ private:
     {
     }
 
-    virtual void fallback(T*& ptr) const
+    virtual void fallback(T*& ptr)
     {
       m_held(ptr);
     }
@@ -1096,7 +1096,7 @@ private:
     FallbackType m_held;
   };
 
-  T* getSafePtr(T*& ptr) const
+  T* getSafePtr(T*& ptr)
   {
     if(!m_checker->isValid(ptr))
     {
@@ -1107,7 +1107,7 @@ private:
 
   T* m_ptr;
   const Check* m_checker;
-  const Fallback* m_fallback;
+  Fallback* m_fallback;
 };
 
 template<class T>
@@ -1132,7 +1132,7 @@ template<class T>
 class DefaultConstructed
 {
 public:
-  void operator()(T*& ptr) const
+  void operator()(T*& ptr)
   {
     delete ptr;
     ptr = new T();
