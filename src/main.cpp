@@ -605,7 +605,7 @@ template<class T>
 class CheckForNull
 {
 public:
-  static bool isValid(T* ptr)
+  static bool isValid(T const* ptr)
   {
     return ptr;
   }
@@ -1052,7 +1052,7 @@ private:
   {
   public:
     virtual ~Check() {}
-    virtual bool isValid(T* ptr) const = 0;
+    virtual bool isValid(T const* ptr) const = 0;
   };
 
   class Fallback
@@ -1071,7 +1071,7 @@ private:
     {
     }
 
-    virtual bool isValid(T* ptr) const
+    virtual bool isValid(T const* ptr) const
     {
       return m_held(ptr);
     }
@@ -1114,7 +1114,7 @@ template<class T>
 class CheckForNull
 {
 public:
-  bool operator()(T* ptr) const
+  bool operator()(T const* ptr) const
   {
     return ptr;
   }
