@@ -348,16 +348,13 @@ class SafePtr {
 };
 #+END_SRC
 #+BEGIN_SRC C++
-template<class T>
-using MySafePtr = SafePtr<T, CheckForNull<T>, ThrowException<T>>;
-
-MySafePtr<int> sp(new int(179));
+SafePtr<int> sp(new int(179));
 CHECK((*sp) == 179);
 
-MySafePtr<std::string> sp(new std::string("string"));
+SafePtr<std::string> sp(new std::string("string"));
 CHECK(sp->size() == 6);
 
-MySafePtr<std::string> sp(NULL);
+SafePtr<std::string> sp(NULL);
 CHECK_THROWS_AS(void(sp->size() == 6), std::runtime_error);
 #+END_SRC
 #+BEGIN_NOTES
