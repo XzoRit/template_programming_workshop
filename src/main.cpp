@@ -633,7 +633,7 @@ public:
 
   ~SafePtr()
   {
-    if(m_ptr) delete m_ptr;
+    delete m_ptr;
   }
 
   T& operator*() const
