@@ -615,7 +615,7 @@ template<class T>
 class ThrowException
 {
 public:
-  static void apply(T* const&)
+  static void apply(T*&)
   {
     throw std::runtime_error("invalid ptr!");
   }
@@ -637,17 +637,17 @@ public:
     m_ptr = nullptr;
   }
 
-  T& operator*() const
+  T& operator*()
   {
     return *getSafePtr(m_ptr);
   }
 
-  T* operator->() const
+  T* operator->()
   {
     return getSafePtr(m_ptr);
   }
 private:
-  static T* getSafePtr(T* const& ptr)
+  static T* getSafePtr(T*& ptr)
   {
     if(!CheckingPolicy::isValid(ptr))
     {
