@@ -548,8 +548,7 @@ CHECK(tester.counter == 2);
 - [[http://en.cppreference.com/w/cpp/memory/shared_ptr/shared_ptr][shared_ptr]] vs. [[http://en.cppreference.com/w/cpp/memory/unique_ptr][unique_ptr]]
 - [[http://en.cppreference.com/w/cpp/utility/functional/function][function<>]]
 
-** conclusion
-- polymorphism is a detail of the implementation
+** polymorphism is a detail
 - value-based-polymorphism
 
 * compile time - runtime
