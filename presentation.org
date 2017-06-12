@@ -345,8 +345,12 @@ template<class T,
 class SafePtr {
     SafePtr(T* ptr) : m_ptr(ptr) {}
     ~SafePtr() { delete m_ptr; }
-    T& operator*() const { return *m_ptr; }
-    T* operator->() const { return m_ptr; }
+    T& operator*() const { return *get(); }
+    T* operator->() const { return get(); }
+    static T* get(T*& ptr) {
+    if(!CheckingPolicy::isValid(ptr)) FallbackPolicy::apply(ptr);
+    return ptr;
+  }
 };
 #+END_SRC
 #+BEGIN_SRC C++
