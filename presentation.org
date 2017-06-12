@@ -479,13 +479,27 @@ struct enable_if : public enable_if_c<Cond::value, T>
   - value
   - type
 - type_traits + enable_if = compiletime-introspection
+- disable_if is available too
 #+END_NOTES
 
 ** copy_n
-- implement copy_n which:
-  - takes a source and a target container and a count
-  - uses memcopy for arrays
-  - otherwise an iterator loop
+#+BEGIN_SRC C++
+template<class Container>
+"enable if Container is array"
+copy_n(const Container& source, Container& target, std::size_t count) {
+  using value_type = decltype(*std::begin(source));
+  std::memcpy(target, source, sizeof(value_type) * count);
+}
+#+END_SRC
+#+BEGIN_SRC C++
+template<class Container>
+"disable if container is array"
+copy_n(const Container& source, Container& target, std::size_t count) {
+  auto b(std::begin(source));
+  auto e(std::next(b, count));
+  for(; b != e; ++b) target.push_back(*b);
+}
+#+END_SRC
 #+BEGIN_NOTES
 - explain 3 approaches
   - enable_if in return type
