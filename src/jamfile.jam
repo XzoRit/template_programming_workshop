@@ -1,0 +1,12 @@
+import boost ;
+
+boost.use-project ;
+
+import testing ;
+
+unit-test workshop
+    : main.cpp
+    : <include>../../catch/single_include <use>/boost//headers
+    ;
+
+always workshop ;
