@@ -339,7 +339,9 @@ struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
 ** SafePtr
 #+BEGIN_SRC C++
-template<class T, class CheckingPolicy, class FallbackPolicy>
+template<class T,
+         class CheckingPolicy = CheckForNull<T>,
+         class FallbackPolicy = ThrowException<T>>
 class SafePtr {
     SafePtr(T* ptr) : m_ptr(ptr) {}
     ~SafePtr() { delete m_ptr; }
