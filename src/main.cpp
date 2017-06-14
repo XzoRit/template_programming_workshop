@@ -196,6 +196,16 @@ static auto value(const std::vector<std::string>& strings)
   });
 }
 }
+namespace v3
+{
+static auto value(const std::vector<std::string>& strings)
+{
+    return std::max_element(
+        std::begin(strings), std::end(strings),
+        [](auto a, auto b)
+        { return a.size() < b.size(); })->size();
+}
+}
 }
 struct compiletime
 {
@@ -282,6 +292,20 @@ TEST_CASE("MaxSize with boost.mpl at compile-time")
     using namespace std::string_literals;
     using namespace MplMax::v3;
     using MaxSize::runtime::v2::value;
+
+    CHECK((value({"char"     , "short", "int"  , "long long"})) ==
+          "long long"s.size());
+    CHECK((value({"long long", "int"  , "short", "char"     })) ==
+          "long long"s.size());
+    CHECK((value({"float"    , "double"                     })) ==
+          "double"s.size());
+    CHECK((value({"double"   , "float"                      })) ==
+          "double"s.size());
+  }
+  {
+    using namespace std::string_literals;
+    using namespace MplMax::v3;
+    using MaxSize::runtime::v3::value;
 
     CHECK((value({"char"     , "short", "int"  , "long long"})) ==
           "long long"s.size());
