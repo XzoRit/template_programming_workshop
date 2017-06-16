@@ -521,11 +521,13 @@ vector<int> != vector<int, MyAllocator>
 
 ** boost.any
 #+BEGIN_SRC plantuml :file boost_any.png
+skinparam backgroundcolor DarkGrey
 skinparam classAttributeIconSize 0
 
 class any {
       +any<ValueType>(const ValueType& value)
       : content(new holder<ValueType>(value) {}
+      --
       -placeholder* content
 }
 
@@ -542,6 +544,13 @@ class holder<ValueType> {
 
 placeholder <|.. holder
 any         o--  placeholder : content
+
+together {
+      class any
+      interface placeholder
+}
+
+any -[hidden]> placeholder
 #+END_SRC
 
 #+RESULTS:
