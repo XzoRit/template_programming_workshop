@@ -520,6 +520,33 @@ vector<int> == vector<int, MyAllocator>
 vector<int> != vector<int, MyAllocator>
 
 ** boost.any
+#+BEGIN_SRC plantuml :file boost_any.png
+skinparam classAttributeIconSize 0
+
+class any {
+      +any<ValueType>(const ValueType& value)
+      : content(new holder<ValueType>(value) {}
+      -placeholder* content
+}
+
+interface placeholder {
+      +{abstract} type_info    type () const
+      +{abstract} placeholder* clone() const
+}
+
+class holder<ValueType> {
+      +type_info    type () const
+      +placeholder* clone() const
+      -ValueType held
+}
+
+placeholder <|.. holder
+any         o--  placeholder : content
+#+END_SRC
+
+#+RESULTS:
+[[file:boost_any.png]]
+
 #+BEGIN_NOTES
 - Show implementation of boost.any
 #+END_NOTES
