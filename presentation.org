@@ -521,11 +521,12 @@ vector<int> != vector<int, MyAllocator>
 
 ** boost.any
 #+BEGIN_SRC plantuml :file boost_any.png
-skinparam monochrome true
-skinparam backgroundcolor LightGrey
+skinparam monochrome false
+skinparam backgroundcolor Brown
 skinparam DefaultFontName Courier
 skinparam RoundCorner 20
 skinparam DefaultFontSize 20
+skinparam DefaultFontColor White
 
 skinparam class {
       ArrowColor Green
@@ -537,7 +538,7 @@ skinparam class {
 
       ArrowColor Black
       BackgroundColor Black
-      BorderColor LightGrey
+      BorderColor Brown
       FontColor White
       FontStyle Bold
 }
