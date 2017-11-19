@@ -121,10 +121,10 @@ TEST_CASE("MaxSize at compile-time")
 ** template specialization
 #+BEGIN_SRC C++
 template<bool x>
-struct static_assertion_failure;
+struct StaticAssert;
 
 template<>
-struct static_assertion_failure<true>
+struct StaticAssert<true>
 {
   static const int value = 1;
 };
@@ -421,7 +421,7 @@ TEST_CASE("cloneable") {
 #+END_NOTES
 
 ** examples
-- object counter
+- static/compile-time polymorphism
 - enable_shared_from_this
 #+BEGIN_NOTES
 - http://en.cppreference.com/w/cpp/memory/enable_shared_from_this
