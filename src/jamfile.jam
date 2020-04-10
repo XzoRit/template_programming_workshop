@@ -1,8 +1,11 @@
-import boost ;
+import boost
+    ;
 
-boost.use-project ;
+boost.use-project
+    ;
 
-import testing ;
+import testing
+    ;
 
 unit-test workshop
     : main.cpp
@@ -10,4 +13,5 @@ unit-test workshop
       <use>/boost//headers
     ;
 
-always workshop ;
+always workshop
+    ;

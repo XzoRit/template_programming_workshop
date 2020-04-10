@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <numeric>
 #include <functional>
+#include <string>
 
 template<class T, class Tag>
 class NamedParameter
@@ -41,6 +42,16 @@ class Location
 {
 public:
     Location(
+        std::string building,
+        std::string pointOfCare,
+        int floor,
+        int bed)
+        : m_building(building)
+        , m_pointOfCare(pointOfCare)
+        , m_floor(floor)
+        , m_bed(bed)
+    {}
+    Location(
         Building building,
         PointOfCare pointOfCare,
         Floor floor,
@@ -59,11 +70,20 @@ private:
 
 TEST_CASE("ctor of Location")
 {
+  {
+    const Location loc(
+        "Central",
+        "Intensive Care",
+        3,
+        12);
+  }
+  {
     const Location loc(
         Building("Central"),
         PointOfCare("Intensive Care"),
         Floor(3),
         Bed(12));
+  }
 }
 
 namespace My

@@ -38,27 +38,12 @@ an error at ... is better than
 
 ** example
 unsafe
-#+BEGIN_SRC C++
-Location(string building, string pointOfCare, int floor, int bed);
-#+END_SRC
+#+INCLUDE: "./src/main.cpp" src C++ :lines "74-79"
 safe
-#+BEGIN_SRC C++
-const Location loc(Building("A"), PointOfCare("Intensive"), Floor(101), Bed(31));
-#+END_SRC
+#+INCLUDE: "./src/main.cpp" src C++ :lines "81-86"
 
 ** named parameter
-#+BEGIN_SRC C++
-class NamedParameter
-{
-public:
-    explicit NamedParameter(const string& value)
-        : m_value(value) {}
-    operator string() const
-    { return m_value; }
-private:
-    string m_value;
-};
-#+END_SRC
+#+INCLUDE: "./src/main.cpp" src C++ :lines "17-32"
 #+BEGIN_NOTES
 - tags for parameter which wrap the same type
 - examples:
