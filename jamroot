@@ -1,0 +1,6 @@
+project template_programming_workshop
+    : build-dir boost_build
+    ;
+
+build-project src
+    ;
