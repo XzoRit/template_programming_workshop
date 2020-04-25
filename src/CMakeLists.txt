@@ -36,6 +36,12 @@ target_sources(
   main.cpp
   )
 
+target_compile_features(
+  main
+  PRIVATE
+  cxx_std_17
+)
+
 target_link_libraries(
   workshop
   PRIVATE
@@ -62,7 +68,7 @@ target_sources(
 target_compile_features(
   mp11
   PRIVATE
-    cxx_std_17
+  cxx_std_17
 )
 
 target_link_libraries(
