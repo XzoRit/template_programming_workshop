@@ -151,12 +151,12 @@ class Location
 // Location loc{Building{"Main"}, PointOfCare{"Intensive"}, Floor{125}, Bed{3}};
 /*
 
-** named parameter
+** named parameter/strong typedef
 
 */
 namespace safe
 {
-template <class T, class Tag>
+template <class T>
 class NamedParameter
 {
   public:
@@ -168,24 +168,57 @@ class NamedParameter
     {
         return m_value;
     }
+
   private:
     T m_value;
 };
 } // namespace safe
 #define NAMED_PARAMETER_TYPE(Name, WrappedType)                                                                        \
-    class Name : public safe::NamedParameter<WrappedType, struct Name##Tag>                                            \
+    class Name : public safe::NamedParameter<WrappedType>                                                              \
     {                                                                                                                  \
       private:                                                                                                         \
-        using base = safe::NamedParameter<WrappedType, struct Name##Tag>;                                              \
+        using base = safe::NamedParameter<WrappedType>;                                                                \
+                                                                                                                       \
       public:                                                                                                          \
         using base::base;                                                                                              \
     };
+namespace safe
+{
+template <class T, class Tag>
+class StrongTypedef
+{
+  public:
+    explicit StrongTypedef(const T& value)
+        : m_value(value)
+    {
+    }
+    operator T() const
+    {
+        return m_value;
+    }
+
+  private:
+    T m_value;
+};
+} // namespace safe
+#define STRONG_TYPEDEF(Name, WrappedType) using Name = safe::StrongTypedef<WrappedType, struct Name##Tag>;
+
 namespace LocationLib
 {
-NAMED_PARAMETER_TYPE(Building, std::string);
-NAMED_PARAMETER_TYPE(PointOfCare, std::string);
-NAMED_PARAMETER_TYPE(Floor, int);
-NAMED_PARAMETER_TYPE(Bed, int);
+namespace v1
+{
+NAMED_PARAMETER_TYPE(Building, std::string)
+NAMED_PARAMETER_TYPE(PointOfCare, std::string)
+NAMED_PARAMETER_TYPE(Floor, int)
+NAMED_PARAMETER_TYPE(Bed, int)
+} // namespace v1
+namespace v2
+{
+STRONG_TYPEDEF(Building, std::string)
+STRONG_TYPEDEF(PointOfCare, std::string)
+STRONG_TYPEDEF(Floor, int)
+STRONG_TYPEDEF(Bed, int)
+} // namespace v2
 } // namespace LocationLib
 /*
 
@@ -200,6 +233,8 @@ NAMED_PARAMETER_TYPE(Bed, int);
 */
 namespace LocationLib
 {
+namespace v1
+{
 class Location
 {
   public:
@@ -210,12 +245,34 @@ class Location
         , m_bed(bed)
     {
     }
+
   private:
     std::string m_building;
     std::string m_pointOfCare;
     int m_floor;
     int m_bed;
 };
+} // namespace v1
+namespace v2
+{
+class Location
+{
+  public:
+    Location(Building building, PointOfCare pointOfCare, Floor floor, Bed bed)
+        : m_building(building)
+        , m_pointOfCare(pointOfCare)
+        , m_floor(floor)
+        , m_bed(bed)
+    {
+    }
+
+  private:
+    std::string m_building;
+    std::string m_pointOfCare;
+    int m_floor;
+    int m_bed;
+};
+} // namespace v2
 } // namespace LocationLib
 TEST_CASE("std::chrono::duration")
 {
@@ -229,8 +286,14 @@ TEST_CASE("std::chrono::duration")
 }
 TEST_CASE("ctor of Location")
 {
-    using namespace LocationLib;
-    const Location loc{Building{"Central"}, PointOfCare{"Intensive Care"}, Floor{3}, Bed{125}};
+    {
+        using namespace LocationLib::v1;
+        const Location loc{Building{"Central"}, PointOfCare{"Intensive Care"}, Floor{3}, Bed{125}};
+    }
+    {
+        using namespace LocationLib::v2;
+        const Location loc{Building{"Central"}, PointOfCare{"Intensive Care"}, Floor{3}, Bed{125}};
+    }
 }
 /*
 
