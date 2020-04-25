@@ -48,3 +48,32 @@ add_test(
   COMMAND
   workshop
   )
+
+add_executable(
+  mp11
+  )
+
+target_sources(
+  mp11
+  PRIVATE
+  mp11.cpp
+  )
+
+target_compile_features(
+  mp11
+  PRIVATE
+    cxx_std_17
+)
+
+target_link_libraries(
+  mp11
+  PRIVATE
+  Boost::boost
+  )
+
+add_test(
+  NAME
+  mp11::exe
+  COMMAND
+  mp11
+  )

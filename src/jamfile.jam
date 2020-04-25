@@ -9,9 +9,16 @@ import testing
 
 unit-test workshop
     : main.cpp
-    : <include>../../catch/single_include
-      <use>/boost//headers
+    : <use>/boost//headers
     ;
 
 always workshop
+    ;
+
+unit-test mp11
+    : mp11.cpp
+    : <use>/boost//headers
+    ;
+
+always mp11
     ;
