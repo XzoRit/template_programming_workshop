@@ -7,8 +7,8 @@
 #+OPTIONS: num:nil 
 #+REVEAL_HLEVEL:1
 #+REVEAL_PLUGINS: (highlight)
+#+REVEAL_INIT_OPTIONS: transition: 'none'
 #+REVEAL_THEME: black
-#+REVEAL_TRANS: none
 
 * Template Programming Workshop
 
