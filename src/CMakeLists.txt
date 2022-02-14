@@ -37,7 +37,7 @@ target_sources(
   )
 
 target_compile_features(
-  main
+  workshop
   PRIVATE
   cxx_std_17
 )
