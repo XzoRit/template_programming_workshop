@@ -5,10 +5,11 @@
 #+OPTIONS: reveal_slide_number:nil
 #+OPTIONS: reveal_progress
 #+OPTIONS: num:nil 
+#+REVEAL_REVEAL_JS_VERSION: 4
 #+REVEAL_HLEVEL:1
 #+REVEAL_PLUGINS: (highlight)
 #+REVEAL_THEME: black
-#+REVEAL_TRANS: none
+#+REVEAL_INIT_OPTIONS: transition: 'none'
 
 * Template Programming Workshop
 
