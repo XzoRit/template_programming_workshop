@@ -507,56 +507,36 @@ vector<int> != vector<int, MyAllocator>
 
 ** boost.any
 #+BEGIN_SRC plantuml :file boost_any.png
-skinparam monochrome false
-skinparam backgroundcolor Brown
-skinparam DefaultFontName Courier
-skinparam RoundCorner 20
-skinparam DefaultFontSize 20
-skinparam DefaultFontColor White
+  !theme plain
 
-skinparam class {
-      ArrowColor Green
-      ArrowFontStyle Bold
+  class any {
+        +any<ValueType>(const ValueType& value)
+        : content(new holder<ValueType>(value) {}
+        --
+        -placeholder* content
+  }
 
-      AttributeFontColor White
-      AttributeFontStyle Bold
-      AttributeIconSize 0
+  interface placeholder {
+        +{abstract} type_info    type () const
+        +{abstract} placeholder* clone() const
+  }
 
-      ArrowColor Black
-      BackgroundColor Black
-      BorderColor Brown
-      FontColor White
-      FontStyle Bold
-}
+  class holder<ValueType> {
+        +type_info    type () const
+        +placeholder* clone() const
+        --
+        -ValueType held
+  }
 
-class any {
-      +any<ValueType>(const ValueType& value)
-      : content(new holder<ValueType>(value) {}
-      --
-      -placeholder* content
-}
+  placeholder <|.. holder
+  any         o--  placeholder : content
 
-interface placeholder {
-      +{abstract} type_info    type () const
-      +{abstract} placeholder* clone() const
-}
+  together {
+        class any
+        interface placeholder
+  }
 
-class holder<ValueType> {
-      +type_info    type () const
-      +placeholder* clone() const
-      --
-      -ValueType held
-}
-
-placeholder <|.. holder
-any         o--  placeholder : content
-
-together {
-      class any
-      interface placeholder
-}
-
-any -[hidden]> placeholder
+  any -[hidden]> placeholder
 #+END_SRC
 
 #+RESULTS:
