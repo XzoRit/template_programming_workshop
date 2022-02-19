@@ -5,50 +5,56 @@
 #+OPTIONS: reveal_slide_number:nil
 #+OPTIONS: reveal_progress
 #+OPTIONS: num:nil 
+#+OPTIONS: toc:nil 
 #+REVEAL_REVEAL_JS_VERSION: 4
 #+REVEAL_HLEVEL:1
 #+REVEAL_PLUGINS: (highlight)
+#+REVEAL_HIGHLIGHT_CSS: %r/plugin/highlight/zenburn.css
 #+REVEAL_INIT_OPTIONS: transition: 'none'
 #+REVEAL_THEME: black
 
+* TOC
+    
 * Template Programming Workshop
 
-* 4 different types of computation
-- runtime
-- type-level computations
-- heterogeneous computations
-- constexpr
-#+BEGIN_NOTES
-- examples: [[file:~/projects/programming/c++/boost/libs/hana/doc/html/index.html#tutorial-introduction-quadrants][boost.hana computational quadrants]]
-#+END_NOTES
+* Motivation
 
-* generic programming
-- algorithms on unknown types
-
-* problems
-- safety
+** problems
 - performance
 - memory
+- safety
 
-* safety
+** safety
 an error at ... is better than
 - compile time
 - link time
 - object construction
 - object use
 
-** example
+*** example
 unsafe
-#+INCLUDE: "./src/main.cpp" src C++ :lines "74-79"
+#+INCLUDE: "./src/main.cpp" src C++ :lines "68-73"
 safe
-#+INCLUDE: "./src/main.cpp" src C++ :lines "81-86"
+#+INCLUDE: "./src/main.cpp" src C++ :lines "75-80"
 
-** named parameter
-#+INCLUDE: "./src/main.cpp" src C++ :lines "17-32"
+*** named parameter
+#+INCLUDE: "./src/main.cpp" src C++ :lines "17-26"
 #+BEGIN_NOTES
 - tags for parameter which wrap the same type
 - examples:
    - boost.chrono.duration
+#+END_NOTES
+
+** generic programming
+- algorithms on unknown types
+
+** 4 different types of computation
+- runtime
+- type-level computations
+- heterogeneous computations
+- constexpr
+#+BEGIN_NOTES
+- examples: [[file:~/projects/programming/c++/boost/libs/hana/doc/html/index.html#tutorial-introduction-quadrants][boost.hana computational quadrants]]
 #+END_NOTES
 
 * deduction
